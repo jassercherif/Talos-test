@@ -1,41 +1,44 @@
 public with sharing class SimpleProcess {
- 
+
     public static void createContactWithError() {
- 
+
         List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
- 
+
         try {
-            // On crée un compte standard
-            Account acc = new Account(AccountNumber = '123');
+            // Create an Account with both AccountNumber and Name
+            Account acc = new Account(
+                AccountNumber = '123',
+                Name = 'Sample Account Name'
+            );
             insert acc;
- 
-            // Contact volontairement erroné (LastName trop long)
+
+            // Contact intentionally erroneous (LastName too long)
             Contact c = new Contact(
                 LastName = 'NomBeaucoupBeaucoupBeaucoupTropLongPourForcerUneErreur',
                 AccountId = acc.Id
             );
- 
-            insert c; // va déclencher une erreur
- 
+
+            insert c; // will trigger an error
+
         } catch (Exception ex) {
- 
-            // Construction du log
+
+            // Build the log
             ApplicationLog__c log = ApplicationLogPython.buildApplicationLog(
                 'SimpleProcess',
                 'createContactWithError',
                 new List<String>{
-                    'Erreur lors de la création du compte',
+                    'Error during contact creation',
                     'Message: ' + ex.getMessage()
                 },
                 ex.getStackTraceString(),
                 null,
-                'Erreur Contact'
+                'Contact Error'
             );
- 
+
             logs.add(log);
         }
- 
-        // insertion du log si nécessaire
+
+        // Insert log if necessary
         if (!logs.isEmpty()) {
             insert logs;
         }
