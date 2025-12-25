@@ -5,24 +5,24 @@ public with sharing class SimpleProcess {
         List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
 
         try {
-            // On crée un compte standard avec le champ Name requis
+            // Create an account with the required Name field
             Account acc = new Account(
-                Name = 'Test Account',
-                AccountNumber = '123'
+                AccountNumber = '123',
+                Name = 'Test Account' // Added required Name field
             );
             insert acc;
 
-            // Contact volontairement erroné (LastName trop long)
+            // Intentionally erroneous contact (LastName too long)
             Contact c = new Contact(
                 LastName = 'NomBeaucoupBeaucoupBeaucoupTropLongPourForcerUneErreur',
                 AccountId = acc.Id
             );
 
-            insert c; // va déclencher une erreur
+            insert c; // This will still trigger an error as intended
 
         } catch (Exception ex) {
 
-            // Construction du log
+            // Build the log
             ApplicationLog__c log = ApplicationLogPython.buildApplicationLog(
                 'SimpleProcess',
                 'createContactWithError',
@@ -37,8 +37,7 @@ public with sharing class SimpleProcess {
 
             logs.add(log);
         }
-
-        // insertion du log si nécessaire
+        // Insert the log if necessary
         if (!logs.isEmpty()) {
             insert logs;
         }
