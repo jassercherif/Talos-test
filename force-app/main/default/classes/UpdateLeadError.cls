@@ -11,8 +11,8 @@ public with sharing class UpdateLeadError {
             );
             insert l;
 
-            // Force an error: updating Id is invalid
-            l.Id = null;
+            // Proper update logic - use the inserted Id
+            l.LastName = 'UpdatedTestLead';
             update l;
 
         } catch (Exception ex) {
