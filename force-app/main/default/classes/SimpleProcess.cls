@@ -1,41 +1,49 @@
 public with sharing class SimpleProcess {
- 
+
     public static void createContactWithError() {
- 
+        createContactWithError('NomBeaucoupBeaucoupBeaucoupTropLongPourForcerUneErreur', null);
+    }
+
+    public static void createContactWithError(String lastName, String accountId) {
         List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
- 
+
         try {
-            // On crée un compte standard
-            Account acc = new Account(AccountNumber = '123');
-            insert acc;
- 
-            // Contact volontairement erroné (LastName trop long)
+            if (String.isBlank(lastName)) {
+                throw new IllegalArgumentException('LastName is required');
+            }
+
+            Account acc;
+            if (String.isBlank(accountId)) {
+                acc = new Account(AccountNumber = '123');
+                insert acc;
+            } else {
+                acc = [SELECT Id FROM Account WHERE Id = :accountId LIMIT 1];
+            }
+
             Contact c = new Contact(
-                LastName = 'NomBeaucoupBeaucoupBeaucoupTropLongPourForcerUneErreur',
+                LastName = lastName,
+                Name = lastName,
                 AccountId = acc.Id
             );
- 
-            insert c; // va déclencher une erreur
- 
+
+            insert c;
+
         } catch (Exception ex) {
- 
-            // Construction du log
             ApplicationLog__c log = ApplicationLogPython.buildApplicationLog(
                 'SimpleProcess',
                 'createContactWithError',
                 new List<String>{
-                    'Erreur lors de la création du compte',
+                    'Erreur lors de la création du contact',
                     'Message: ' + ex.getMessage()
                 },
                 ex.getStackTraceString(),
                 null,
                 'Erreur Contact'
             );
- 
+
             logs.add(log);
         }
- 
-        // insertion du log si nécessaire
+
         if (!logs.isEmpty()) {
             insert logs;
         }
