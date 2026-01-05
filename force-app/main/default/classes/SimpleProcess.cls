@@ -1,43 +1,12 @@
-public with sharing class SimpleProcess {
- 
-    public static void createContactWithError() {
- 
-        List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
- 
+public class SimpleProcess {
+    // Method to test error handling for Contact creation
+    public static void testContactCreationErrorHandling() {
+        // This error is intentional for testing error handling
         try {
-            // On crée un compte standard
-            Account acc = new Account(AccountNumber = '123');
-            insert acc;
- 
-            // Contact volontairement erroné (LastName trop long)
-            Contact c = new Contact(
-                LastName = 'NomBeaucoupBeaucoupBeaucoupTropLongPourForcerUneErreur',
-                AccountId = acc.Id
-            );
- 
-            insert c; // va déclencher une erreur
- 
-        } catch (Exception ex) {
- 
-            // Construction du log
-            ApplicationLog__c log = ApplicationLogPython.buildApplicationLog(
-                'SimpleProcess',
-                'createContactWithError',
-                new List<String>{
-                    'Erreur lors de la création du compte',
-                    'Message: ' + ex.getMessage()
-                },
-                ex.getStackTraceString(),
-                null,
-                'Erreur Contact'
-            );
- 
-            logs.add(log);
-        }
- 
-        // insertion du log si nécessaire
-        if (!logs.isEmpty()) {
-            insert logs;
+            Contact c = new Contact();
+            insert c; // This will fail because the Name field is required
+        } catch (Exception e) {
+            System.debug('Expected error: Contact creation failed due to missing required field - ' + e.getMessage());
         }
     }
 }
