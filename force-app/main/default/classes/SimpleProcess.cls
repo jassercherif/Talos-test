@@ -1,12 +1,15 @@
 public with sharing class SimpleProcess {
- 
+    
     public static void createContactWithError() {
  
         List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
  
         try {
             // On crée un compte standard
-            Account acc = new Account(AccountNumber = '123');
+            Account acc = new Account(
+                Name = 'Test Account',  // Added required field
+                AccountNumber = '123'
+            );
             insert acc;
  
             // Contact volontairement erroné (LastName trop long)
@@ -24,7 +27,7 @@ public with sharing class SimpleProcess {
                 'SimpleProcess',
                 'createContactWithError',
                 new List<String>{
-                    'Erreur lors de la création du compte',
+                    'Erreur lors de la création du contact',
                     'Message: ' + ex.getMessage()
                 },
                 ex.getStackTraceString(),
