@@ -1,39 +1,12 @@
-public with sharing class UpdateLeadError {
-
-    public static void updateLeadWithError() {
-        List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
-
-        try {
-            // Create a Lead with required fields
-            Lead l = new Lead(
-                LastName = 'TestLead',
-                Company = 'TestCompany'
-            );
-            insert l;
-
-            // Force an error: updating Id is invalid
-            l.Id = null;
-            update l;
-
-        } catch (Exception ex) {
-
-            ApplicationLog__c log = ApplicationLogPython.buildApplicationLog(
-                'UpdateLeadError',
-                'updateLeadWithError',
-                new List<String>{
-                    'Erreur lors de la mise à jour du Lead',
-                    'Message: ' + ex.getMessage()
-                },
-                ex.getStackTraceString(),
-                null,
-                'DmlException'
-            );
-
-            logs.add(log);
+public class UpdateLeadError {
+    public static void updateLeads(List<Lead> leads) {
+        List<Lead> leadsToUpdate = new List<Lead>();
+        for (Lead l : leads) {
+            if (l.Id != null) {
+                l.Description = 'Updated by batch';
+                leadsToUpdate.add(l);
+            }
         }
-
-        if (!logs.isEmpty()) {
-            insert logs;
-        }
+        update leadsToUpdate;
     }
 }
