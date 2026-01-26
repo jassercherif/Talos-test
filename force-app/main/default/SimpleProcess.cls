@@ -1,0 +1,1 @@
+public class SimpleProcess {  public void createContactWithError() {   Contact c = new Contact();   c.FirstName = 'Test';   c.LastName = 'User'; // Added missing LastName   c.Email = 'test@example.com';   insert c;  }}
