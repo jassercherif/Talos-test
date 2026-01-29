@@ -1,11 +1,10 @@
-global class SimpleProcess {
-    global static Contact createContactWithError() {
+public class SimpleProcess {
+    public static void createContactWithError() {
         Contact c = new Contact();
-        c.FirstName = 'Default';
-        c.LastName = 'User';
-        c.Email = 'test@example.com';
+        c.FirstName = 'John';
+        c.LastName = 'Doe';
+        c.Email = 'john.doe@example.com';
         c.Phone = '123-456-7890';
         insert c;
-        return c;
     }
 }
