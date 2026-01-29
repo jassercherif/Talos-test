@@ -1,10 +1,7 @@
 global class SimpleProcess {
-    global static List<Contact> getContacts() {
-        List<Contact> contacts = new List<Contact>();
-        Contact c = new Contact();
-        c.FirstName = 'Test';
-        c.LastName = 'User';
-        contacts.add(c);
-        return contacts;
+    global static String process(String input) {
+        String lastName = input != null ? input.substring(0, Math.min(input.length(), 80)) : null;
+        // existing logic...
+        return "Processed: " + lastName;
     }
 }
