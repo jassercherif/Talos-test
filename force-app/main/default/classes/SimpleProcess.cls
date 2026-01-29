@@ -1,10 +1,7 @@
-global class SimpleProcess {
-    global static List<Contact> getContacts() {
-        List<Contact> contacts = new List<Contact>();
+public class SimpleProcess {
+    public static void createContactWithError() {
         Contact c = new Contact();
-        c.FirstName = 'Test';
-        c.LastName = 'User';
-        contacts.add(c);
-        return contacts;
+        c.LastName = 'Test Contact'; // Initialize the 'LastName' field
+        insert c;
     }
 }
