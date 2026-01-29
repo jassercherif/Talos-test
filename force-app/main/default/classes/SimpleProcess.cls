@@ -1,8 +1,11 @@
-public class SimpleProcess {
-    public static void createContactWithError() {
+global class SimpleProcess {
+    global static Contact createContactWithError() {
         Contact c = new Contact();
-        // Fix: Populate the required Name field before insertion
-        c.LastName = 'Default Name';
+        c.FirstName = 'Default';
+        c.LastName = 'User';
+        c.Email = 'test@example.com';
+        c.Phone = '123-456-7890';
         insert c;
+        return c;
     }
 }
