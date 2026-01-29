@@ -1,11 +1,10 @@
 global class SimpleProcess {
-    global static Contact createContactWithError() {
+    global static List<Contact> getContacts() {
+        List<Contact> contacts = new List<Contact>();
         Contact c = new Contact();
-        c.FirstName = 'Default';
+        c.FirstName = 'Test';
         c.LastName = 'User';
-        c.Email = 'test@example.com';
-        c.Phone = '123-456-7890';
-        insert c;
-        return c;
+        contacts.add(c);
+        return contacts;
     }
 }
