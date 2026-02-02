@@ -1,10 +1,10 @@
 global class SimpleProcess {
-    global static List<Contact> getContacts() {
-        List<Contact> contacts = new List<Contact>();
+    global static Contact createContactWithError(String lastName, String email) {
         Contact c = new Contact();
-        c.FirstName = 'Test';
-        c.LastName = 'User';
-        contacts.add(c);
-        return contacts;
+        c.LastName = lastName;
+        c.Email = email;
+        c.Name = lastName + ' ' + email; // Ensure Name field is populated
+        insert c;
+        return c;
     }
 }
