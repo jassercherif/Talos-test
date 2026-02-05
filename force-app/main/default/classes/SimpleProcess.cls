@@ -1,10 +1,10 @@
-global class SimpleProcess {
-    global static Contact createContactWithError(String lastName, String email) {
-        Contact c = new Contact();
-        c.LastName = lastName;
-        c.Email = email;
-        c.Name = lastName + ' ' + email; // Ensure Name field is populated
-        insert c;
-        return c;
+public class SimpleProcess {
+    public static void processRecords(List<SObject> records) {
+        for (SObject record : records) {
+            // Apply business logic here
+            if (record.get('Status') == 'Active') {
+                record.put('Processed__c', true);
+            }
+        }
     }
 }
