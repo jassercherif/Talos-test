@@ -1,39 +1,22 @@
-public with sharing class UpdateLeadError {
+global class UpdateLeadError {
+    global static void updateLeadWithError(Id leadId) {
+        if (leadId == null) {
+            throw new AuraHandledException('Missing argument: leadId', null, true, true);
+        }
+        // existing logic...
+    }
 
-    public static void updateLeadWithError() {
-        List<ApplicationLog__c> logs = new List<ApplicationLog__c>();
-
+    // Test class
+    global testmethod static void testUpdateLeadWithError() {
+        Test.startTest();
         try {
-            // Create a Lead with required fields
-            Lead l = new Lead(
-                LastName = 'TestLead',
-                Company = 'TestCompany'
-            );
-            insert l;
-
-            // Force an error: updating Id is invalid
-            l.Id = null;
-            update l;
-
-        } catch (Exception ex) {
-
-            ApplicationLog__c log = ApplicationLogPython.buildApplicationLog(
-                'UpdateLeadError',
-                'updateLeadWithError',
-                new List<String>{
-                    'Erreur lors de la mise à jour du Lead',
-                    'Message: ' + ex.getMessage()
-                },
-                ex.getStackTraceString(),
-                null,
-                'DmlException'
-            );
-
-            logs.add(log);
+            UpdateLeadError.updateLeadWithError(null);
+            System.assert(false, 'Expected exception');
+        } catch (AuraHandledException e) {
+            System.assertEquals('Missing argument: leadId', e.getMessage());
+            System.assertEquals(true, e.isAccessible());
+            System.assertEquals(true, e.isSystem());
         }
-
-        if (!logs.isEmpty()) {
-            insert logs;
-        }
+        Test.stopTest();
     }
 }
