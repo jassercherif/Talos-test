@@ -3,8 +3,11 @@ global class SimpleProcess {
         Contact c = new Contact();
         c.LastName = lastName;
         c.Email = email;
-        c.Name = lastName + ' ' + email; // Ensure Name field is populated
-        insert c;
+        try {
+            insert c;
+        } catch (DmlException e) {
+            // Handle error
+        }
         return c;
     }
 }
