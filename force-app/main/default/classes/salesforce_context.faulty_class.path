@@ -1,1 +1,8 @@
-salesforce_context.faulty_class.apex_fix
+public class SimpleProcess {
+    public static void createContactWithError() {
+        Contact c = new Contact();
+        c.Name = 'John Doe'; // Add missing Name field
+        c.Phone = '1234567890';
+        insert c;
+    }
+}
