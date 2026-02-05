@@ -1,10 +1,13 @@
-global class SimpleProcess {
-    global static Contact createContactWithError(String lastName, String email) {
+public class SimpleProcess {
+    public static void createContactWithError() {
         Contact c = new Contact();
-        c.LastName = lastName;
-        c.Email = email;
-        c.Name = lastName + ' ' + email; // Ensure Name field is populated
-        insert c;
-        return c;
+        // Assign required Name field
+        c.Name = 'Test Contact';
+        // Validate Name before insertion
+        if (String.isNotBlank(c.Name)) {
+            insert c;
+        } else {
+            System.debug('Contact Name is required');
+        }
     }
 }
